@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Map Fraudulent Companies</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+	<link rel="stylesheet" href="basis.css" type="text/css" />
+</head>
+<body>
+
+	<div id='map'></div>
+
+	<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZWxsYXYiLCJhIjoiY2pxbmx0dDJtMW1hdTN4bm5pMXN0MGFxbiJ9.2F9-zpgWv6Ex-UlczFEuAQ';
+
+	var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/mapbox/light-v9',
+		center: [4.7354443,52.1304886],
+		zoom: 6.5
+	});	
+	
+	map.on('load', function () {
+
+		map.addLayer({
+			'id': 'riskcomp',
+			'type': 'circle',
+			'source': {
+				type: 'vector',
+				url: 'mapbox://examples.8fgz4egr'
+			},
+			'source-layer': 'sf2010',
+			'paint': {
+				// make circles larger as the user zooms from z12 to z22
+				'circle-radius': {
+					'base': 1.75,
+					'stops': [[12, 2], [22, 180]]
+				},
+				// color circles by risk factor, using a match expression
+				// https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+            'circle-color': [
+                'match',
+                ['get', 'risk'],
+                'High', '#ff0000',
+                'Medium', '#ffff00',
+                'Low', '#00ff00',
+                /* other */ '#ccc'
+            ]
+			}
+		});
+	});
+	
+	var geojson = {
+		type: 'FeatureCollection',
+		features: [{
+			type: 'Feature',
+			geometry: {
+				type: 'circle',
+				coordinates: [4.616570, 51.875200]
+			},
+			properties: {
+				title: 'Falco Lines B.V.',
+				description: 'Ridderpoort 9, Ridderkerk'
+			}
+			circle-color: {
+				risk: 'High'
+			}
+		},
+		{
+		type: 'Feature',
+		geometry: {
+			type: 'circle',
+			coordinates: [5.795830, 53.197960]
+		},
+		properties: {
+			title: 'Distr. en Container Centr. BV',
+			description: 'Willemskade 1, Leeuwarden'
+		}
+		circle-color: {
+			risk: 'Low'
+		}
+		}]
+	};
+
+	// add markers to map
+	geojson.features.forEach(function(marker) {
+		// create a HTML element for each feature
+		var el = document.createElement('div');
+		el.className = 'marker';
+
+		// make a marker for each feature and add to the map
+		new mapboxgl.Marker(el)
+		.setLngLat(marker.geometry.coordinates)
+		.setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+		.setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+		.addTo(map);
+	});
+	
+</script>
+
+</body>
+</html>

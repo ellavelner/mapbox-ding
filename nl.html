@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Finding Fraud | Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+    <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+	<link rel="stylesheet" href="basis.css" type="text/css" />
+</head>
+<body>
+	<header>
+		<span><a href="index.html" alt="home"><img src="home.png" style="width: 30px; margin-left: 5%;"></a></span>
+		<span style="margin-left: 24%;"><a style="text-decoration: none;" href="index.html" alt="home"><h1 style="display: inline;">Risk Assessment Expeditors</h1></a></span>
+		<span style="float:right; margin-right: 5%"><a href="info.html" alt="information"><img src="icon-info.png" style="width: 30px; margin-right: 5px"></a><a href="how.html" alt="how to"><img src="how-to.png" style="width: 30px"></a></span>
+	</header>
+	
+	<div id='map'></div>
+	<form autocomplete="off" action="/action_page.php">
+		<div class="autocomplete" style="width:300px;">
+			<input id="myInput" type="text" name="myCompany" placeholder="Search for a company">
+		</div>
+	</form>
+	<br>
+	<button id='nl'>The Netherlands</button>
+	<button id='gron'>Groningen</button>
+	<button id='fries'>Friesland</button>
+	<button id='dren'>Drenthe</button>
+	<button id='ovrij'>Overijssel</button>
+	<button id='flev'>Flevoland</button>
+	<button id='geld'>Gelderland</button>
+	<button id='utr'>Utrecht</button>
+	<button id='nrdh'>Noord-Holland</button>
+	<button id='zdhl'>Zuid-Holland</button>
+	<button id='zeel'>Zeeland</button>
+	<button id='nrdb'>Noord-Brabant</button>
+	<button id='limb'>Limburg</button>
+	
+	<div class="filter">
+		<label class="container"><p class="txt">Show all</p>
+		<input type="radio" name="radio" checked="checked" onClick="showAll()">
+		<span class="checkmark"></span>
+		</label>
+
+		<label class="container"><p class="txt">Legit companies</p>
+		<input type="radio" name="radio" onClick="filterGreen()">
+		<span class="checkmark"></span>
+		</label>
+
+		<label class="container"><p class="txt">Doubtfull companies</p>
+		<input type="radio" name="radio" onClick="filterYellow()">
+		<span class="checkmark"></span>
+		</label>
+
+		<label class="container"><p class="txt">Fraudulant companies</p>
+		<input type="radio" name="radio" onClick="filterRed()">
+		<span class="checkmark"></span>
+		</label>
+	</div>
+	
+	
+	<footer>
+		<p>A website made by Don, Ella, Jeffrey, Rouel, Roza &amp; Wessel &copy; 2019 </p>
+	</footer>
+	<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZWxsYXYiLCJhIjoiY2pxbmx0dDJtMW1hdTN4bm5pMXN0MGFxbiJ9.2F9-zpgWv6Ex-UlczFEuAQ';
+	
+	var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/mapbox/light-v9',
+		center: [4.7354443,52.4444886],
+		zoom: 6.3
+	});	
+	
+	//data source: http://opendata.dc.gov/datasets/e87a760828844422afe864a6754049c2_20?geometry=-77.297%2C38.854%2C-76.732%2C38.934
+    //map.on('load', function () {
+        //map.addSource('dc', {
+            //type: 'geojson',
+            //data: 'https://gist.githubusercontent.com/hrecht/82b6440ed3b982a6f594/raw/48832482382f81d1f6943896626e21b80da6b45c/data.geojson'
+        //});
+	//}
+	
+	document.getElementById('nl').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.7354443,52.444886],
+		zoom: 6.2
+		});
+	});
+	
+	document.getElementById('gron').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [6.5641557,53.225763],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('fries').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.8143618,53.1294687],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('dren').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [6.5408469,52.9162819],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('ovrij').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [6.4006195,52.4158796],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('flev').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.5933953,52.5671738],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('geld').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.9424639,52.076811],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('utr').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.1802852,52.1198362],
+		zoom: 9.5
+		});
+	});
+	
+	document.getElementById('nrdh').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.8341893,52.4893442],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('zdhl').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.5086875,52.0345879],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('zeel').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.0036609,51.5436594],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('nrdb').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.1884049,51.5837798],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('limb').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.8528221,51.154374],
+		zoom: 8.5
+		});
+	});
+	
+	
+	var geojson = {
+		type: 'FeatureCollection',
+		features: [{
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				coordinates: [4.616570, 51.875200]
+			},
+			properties: {
+				title: 'Falco Lines B.V.',
+				address: 'Ridderpoort 9, Ridderkerk',
+				ca: 'Ridderpoort 9, Ridderkerk',
+				sbi: 'Expediteurs/cargadoors/bevrachters e.d.',
+				rechtsvorm: 'Besloten vennootschap (bv)',
+				website: 'http://www.falcolines.nl/',
+				score: 'low'
+			}
+		},
+		{
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				coordinates: [5.795830, 53.197960]
+			},
+			properties: {
+				title: 'Distr. en Container Centr. BV',
+				address: 'Willemskade 1, Leeuwarden',
+				ca: 'Postbus 2739, Leeuwarden',
+				sbi: 'Expediteurs/cargadoors/bevrachters e.d.',
+				rechtsvorm: 'Besloten vennootschap (bv)',
+				website: 'niet bekend',
+				score: 'high'
+			}
+		}]
+	};
+	
+	// add markers to map
+	geojson.features.forEach(function(marker) {
+		// create a HTML element for each feature
+		var el = document.createElement('div');
+			if (marker.properties.score == 'low') {el.className = 'marker-low';} 
+			else if (marker.properties.score == 'medium') {el.className = 'marker-medium';}
+			else if (marker.properties.score == 'high' ) {el.className = 'marker-high';}
+			else {el.className = 'marker';}
+			
+		
+		// make a marker for each feature and add to the map
+		new mapboxgl.Marker(el)
+		.setLngLat(marker.geometry.coordinates)
+		.setPopup(new mapboxgl.Popup({offset: 10}) // add popups
+		.setHTML('<h2>' + marker.properties.title + '</h2><p><b>Company Address</b><br>' + marker.properties.address + '</p><p><b>Correspondence Address</b><br>' + marker.properties.ca + '</p><p><b>SBI</b><br>' + marker.properties.sbi + '</p><p><b>Legal form</b><br>' + marker.properties.rechtsvorm + '</p><p><b>Website: </b><a href = '+ marker.properties.website +' target="_blank">' + marker.properties.website + '</a></p>'))
+		.addTo(map);
+	});
+	
+	// search bar!
+	function autocomplete(inp, arr) {
+		/*the autocomplete function takes two arguments,
+		the text field element and an array of possible autocompleted values:*/
+		var currentFocus;
+		/*execute a function when someone writes in the text field:*/
+		inp.addEventListener("input", function(e) {
+			var a, b, i, val = this.value;
+			/*close any already open lists of autocompleted values*/
+			closeAllLists();
+			if (!val) { return false;}
+			currentFocus = -1;
+			/*create a DIV element that will contain the items (values):*/
+			a = document.createElement("DIV");
+			a.setAttribute("id", this.id + "autocomplete-list");
+			a.setAttribute("class", "autocomplete-items");
+			/*append the DIV element as a child of the autocomplete container:*/
+			this.parentNode.appendChild(a);
+			/*for each item in the array...*/
+			for (i = 0; i < arr.length; i++) {
+				/*check if the item starts with the same letters as the text field value:*/
+				if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+					/*create a DIV element for each matching element:*/
+					b = document.createElement("DIV");
+					/*make the matching letters bold:*/
+					b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+					b.innerHTML += arr[i].substr(val.length);
+					/*insert a input field that will hold the current array item's value:*/
+					b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+					/*execute a function when someone clicks on the item value (DIV element):*/
+					b.addEventListener("click", function(e) {
+						/*insert the value for the autocomplete text field:*/
+						inp.value = this.getElementsByTagName("input")[0].value;
+						// fly to the point of the company and zoom in:
+						map.flyTo({
+							center: findCoordinates(inp.value),
+							zoom: 15
+						});
+						
+						lala = inp.value;
+						// open popup belonging to company:
+						// https://docs.mapbox.com/mapbox-gl-js/api/#mapmouseevent#point
+						map.openPopup(lala)
+						/*close the list of autocompleted values,
+						(or any other open lists of autocompleted values:*/
+						closeAllLists();
+						
+						
+					});
+					a.appendChild(b);
+				}
+			}
+		});
+
+		/*execute a function presses a key on the keyboard:*/
+		inp.addEventListener("keydown", function(e) {
+			var x = document.getElementById(this.id + "autocomplete-list");
+			if (x) x = x.getElementsByTagName("div");
+			if (e.keyCode == 40) {
+				/*If the arrow DOWN key is pressed,
+				increase the currentFocus variable:*/
+				currentFocus++;
+				/*and and make the current item more visible:*/
+				addActive(x);
+				} else if (e.keyCode == 38) { //up
+					/*If the arrow UP key is pressed,
+					decrease the currentFocus variable:*/
+					currentFocus--;
+					/*and and make the current item more visible:*/
+					addActive(x);
+				} else if (e.keyCode == 13) {
+					/*If the ENTER key is pressed, prevent the form from being submitted,*/
+					e.preventDefault();
+					if (currentFocus > -1) {
+						/*and simulate a click on the "active" item:*/
+						if (x) x[currentFocus].click();
+					}
+				}
+		});
+		function addActive(x) {
+			/*a function to classify an item as "active":*/
+			if (!x) return false;
+			/*start by removing the "active" class on all items:*/
+			removeActive(x);
+			if (currentFocus >= x.length) currentFocus = 0;
+			if (currentFocus < 0) currentFocus = (x.length - 1);
+			/*add class "autocomplete-active":*/
+			x[currentFocus].classList.add("autocomplete-active");
+		}
+		function removeActive(x) {
+			/*a function to remove the "active" class from all autocomplete items:*/
+			for (var i = 0; i < x.length; i++) {
+				x[i].classList.remove("autocomplete-active");
+			}
+		}
+		function closeAllLists(elmnt) {
+			/*close all autocomplete lists in the document,
+			except the one passed as an argument:*/
+			var x = document.getElementsByClassName("autocomplete-items");
+			for (var i = 0; i < x.length; i++) {
+				if (elmnt != x[i] && elmnt != inp) {
+					x[i].parentNode.removeChild(x[i]);
+				}
+			}
+		}
+		/*execute a function when someone clicks in the document:*/
+		document.addEventListener("click", function (e) {
+			closeAllLists(e.target);
+		});
+	}
+	
+	var expected_result = geojson.features.map(function (el) {
+		return el.properties.title;
+	});
+	
+	var matching_coordinates = geojson.features.map(function (el) {
+		return el.geometry.coordinates;
+	});
+	
+	var companies = expected_result;
+	var coordinates = matching_coordinates;
+	
+	function findCoordinates(company) {
+		c = coordinates[companies.indexOf(company)];
+		return c
+	}
+
+	console.log(expected_result);
+	console.log(matching_coordinates);
+	console.log(companies);
+	console.log(coordinates[companies.indexOf('Falco Lines B.V.')]);
+	console.log(geojson.features.map);
+	
+	/*initiate the autocomplete function on the "myInput" element, and pass along the companies array as possible autocomplete values:*/
+	autocomplete(document.getElementById("myInput"), companies);	
+	
+	// WANT POPUP FIXED ON SCREEN 
+	// https://www.mapbox.com/help/tutorials/markers-js/ MAYBE?
+	
+	// filter
+	function filterRed(el) {
+		if (el.classList.contains('marker-low')) {div.style.visibility = 'hidden';} 
+		else if (el.classList.contains('marker-medium')) {div.style.visibility = 'hidden';} 
+		else if (el.classList.contains('marker-high')) {div.style.visibility = 'visible';}
+	}
+	
+	function filterYellow() {
+		if (div.classList.contains('marker-low')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-medium')) {div.style.visibility = 'visible';}
+	}
+	
+	function filterGreen() {
+		if (div.classList.contains('marker-medium')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-low')) {div.style.visibility = 'visible';}
+	}
+	
+	function showAll() {
+		if (div.classList.contains('marker-low')) {div.style.visibility = 'visible';}
+		else if (div.classList.contains('marker-medium')) {div.style.visibility = 'visible';}
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'visible';}
+		else {div.style.visibility = 'hidden'}
+	}
+	
+</script>
+
+</body>
+</html>

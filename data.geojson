@@ -1,0 +1,35 @@
+{
+  type: 'FeatureCollection',
+		features: [{
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				coordinates: [4.616570, 51.875200]
+			},
+			properties: {
+				title: 'Falco Lines B.V.',
+				address: 'Ridderpoort 9, Ridderkerk',
+				ca: 'Ridderpoort 9, Ridderkerk',
+				sbi: 'Expediteurs/cargadoors/bevrachters e.d.',
+				rechtsvorm: 'Besloten vennootschap (bv)',
+				website: 'http://www.falcolines.nl/',
+				score: 'low'
+			}
+		},
+		{
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				coordinates: [5.795830, 53.197960]
+			},
+			properties: {
+				title: 'Distr. en Container Centr. BV',
+				address: 'Willemskade 1, Leeuwarden',
+				ca: 'Postbus 2739, Leeuwarden',
+				sbi: 'Expediteurs/cargadoors/bevrachters e.d.',
+				rechtsvorm: 'Besloten vennootschap (bv)',
+				website: 'niet bekend',
+				score: 'high'
+			}
+		}]
+  }

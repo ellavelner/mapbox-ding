@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Finding Fraud | Map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+	<link rel="stylesheet" href="basis.css" type="text/css" />
+</head>
+<body>
+	<header>
+		<span><a href="index.html" alt="home"><img src="home.png" style="width: 30px; margin-left: 5%;"></a></span>
+		<span style="margin-left: 33%;"><a style="text-decoration: none;" href="index.html" alt="home"><h1 style="display: inline;">Finding Fraud</h1></a></span>
+		<span style="float:right; margin-right: 5%"><a href="info.html" alt="information"><img src="icon-info.png" style="width: 30px; margin-right: 5px"></a><a href="how.html" alt="how to"><img src="how-to.png" style="width: 30px"></a></span>
+	</header>
+	
+	<div id='map'></div>
+	<br>
+	<button id='nl'>The Netherlands</button>
+	<button id='gron'>Groningen</button>
+	<button id='fries'>Friesland</button>
+	<button id='dren'>Drenthe</button>
+	<button id='ovrij'>Overijssel</button>
+	<button id='flev'>Flevoland</button>
+	<button id='geld'>Gelderland</button>
+	<button id='utr'>Utrecht</button>
+	<button id='nrdh'>Noord-Holland</button>
+	<button id='zdhl'>Zuid-Holland</button>
+	<button id='zeel'>Zeeland</button>
+	<button id='nrdb'>Noord-Brabant</button>
+	<button id='limb'>Limburg</button>
+	
+	<div class="filter">
+		<label class="container">Show all
+		<input type="radio" name="radio" checked="checked" onClick="showAll()">
+		<span class="checkmark"></span>
+		</label>
+
+		<label class="container">Legit companies
+		<input type="radio" name="radio" onClick="filterGreen(element)">
+		<span class="checkmark"></span>
+		</label>
+
+		<label class="container">Doubtfull companies
+		<input type="radio" name="radio" onClick="filterYellow(element)">
+		<span class="checkmark"></span>
+		</label>
+
+		<label class="container">Fraudulant companies
+		<input type="radio" name="radio" onClick="filterRed(element)">
+		<span class="checkmark"></span>
+		</label>
+	</div>
+	
+	
+	<footer>
+		<p>A website made by Don, Ella, Jeffrey, Rouel, Roza &amp; Wessel &copy; 2019 </p>
+	</footer>
+	<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZWxsYXYiLCJhIjoiY2pxbmx0dDJtMW1hdTN4bm5pMXN0MGFxbiJ9.2F9-zpgWv6Ex-UlczFEuAQ';
+	
+	var map = new mapboxgl.Map({
+		container: 'map',
+		style: 'mapbox://styles/mapbox/light-v9',
+		center: [4.7354443,52.1304886],
+		zoom: 6.3
+	});	
+
+	//data source: http://opendata.dc.gov/datasets/e87a760828844422afe864a6754049c2_20?geometry=-77.297%2C38.854%2C-76.732%2C38.934
+    //map.on('load', function () {
+        //map.addSource('dc', {
+            //type: 'geojson',
+            //data: 'https://gist.githubusercontent.com/hrecht/82b6440ed3b982a6f594/raw/48832482382f81d1f6943896626e21b80da6b45c/data.geojson'
+        //});
+	//}
+	
+	document.getElementById('nl').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.7354443,52.1304886],
+		zoom: 6.2
+		});
+	});
+	
+	document.getElementById('gron').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [6.5641557,53.225763],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('fries').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.8143618,53.1294687],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('dren').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [6.5408469,52.9162819],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('ovrij').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [6.4006195,52.4158796],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('flev').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.5933953,52.5671738],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('geld').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.9424639,52.076811],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('utr').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.1802852,52.1198362],
+		zoom: 9.5
+		});
+	});
+	
+	document.getElementById('nrdh').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.8341893,52.4893442],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('zdhl').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.5086875,52.0345879],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('zeel').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [4.0036609,51.5436594],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('nrdb').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.1884049,51.5837798],
+		zoom: 9
+		});
+	});
+	
+	document.getElementById('limb').addEventListener('click', function () {
+    // by up to 5 degrees.
+		map.flyTo({
+        center: [5.8528221,51.154374],
+		zoom: 8.5
+		});
+	});
+	
+	
+	var geojson = {
+		type: 'FeatureCollection',
+		features: [{
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				coordinates: [4.616570, 51.875200]
+			},
+			properties: {
+				title: 'Falco Lines B.V.',
+				address: 'Ridderpoort 9, Ridderkerk',
+				ca: 'Ridderpoort 9, Ridderkerk',
+				sbi: 'Expediteurs/cargadoors/bevrachters e.d.',
+				rechtsvorm: 'Besloten vennootschap (bv)',
+				website: 'http://www.falcolines.nl/',
+				score: 5
+			}
+		},
+		{
+			type: 'Feature',
+			geometry: {
+				type: 'Point',
+				coordinates: [5.795830, 53.197960]
+			},
+			properties: {
+				title: 'Distr. en Container Centr. BV',
+				address: 'Willemskade 1, Leeuwarden',
+				ca: 'Postbus 2739, Leeuwarden',
+				sbi: 'Expediteurs/cargadoors/bevrachters e.d.',
+				rechtsvorm: 'Besloten vennootschap (bv)',
+				website: 'niet bekend',
+				score: 99
+			}
+		}]
+	};
+	
+	// add markers to map
+	geojson.features.forEach(function(marker) {
+		// create a HTML element for each feature
+		var el = document.createElement('div');
+			if (marker.properties.score <= 30) {el.className = 'marker-low';} 
+			else if (marker.properties.score <= 70) {el.className = 'marker-medium';}
+			else if (marker.properties.score <= 100) {el.className = 'marker-high';}
+			else {el.className = 'marker';}
+			
+		
+		// make a marker for each feature and add to the map
+		new mapboxgl.Marker(el)
+		.setLngLat(marker.geometry.coordinates)
+		.setPopup(new mapboxgl.Popup({offset: [500, 0]}) // add popups
+		.setHTML('<h2>' + marker.properties.title + '</h2><p><b>Company Address</b><br>' + marker.properties.address + '</p><p><b>Correspondence Address</b><br>' + marker.properties.ca + '</p><p><b>SBI</b><br>' + marker.properties.sbi + '</p><p><b>Legal form</b><br>' + marker.properties.rechtsvorm + '</p><p><b>Website:</b> <a href = '+ marker.properties.website +' target="_blank">' + marker.properties.website + '</a></p>'))
+		.addTo(map);
+	});
+	
+	//<div id="mySidenav" class="sidenav"><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	// sidebar
+	function openNav() {
+		document.getElementById("mySidenav").style.width = "250px";
+	}
+
+	function closeNav() {
+		document.getElementById("mySidenav").style.width = "0";
+	}
+	
+	// filter
+	function filterRed() {
+		if (div.classList.contains('marker-low')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-medium')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'visible';}
+	}
+	
+	function filterYellow() {
+		if (div.classList.contains('marker-low')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-medium')) {div.style.visibility = 'visible';}
+	}
+	
+	function filterGreen() {
+		if (div.classList.contains('marker-medium')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'hidden';} 
+		else if (div.classList.contains('marker-low')) {div.style.visibility = 'visible';}
+	}
+	
+	function showAll() {
+		if (div.classList.contains('marker-low')) {div.style.visibility = 'visible';}
+		else if (div.classList.contains('marker-medium')) {div.style.visibility = 'visible';}
+		else if (div.classList.contains('marker-high')) {div.style.visibility = 'visible';}
+		else {div.style.visibility = 'hidden'}
+	}
+	
+</script>
+
+</body>
+</html>
